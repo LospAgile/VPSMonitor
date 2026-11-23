@@ -4,12 +4,12 @@ VPSMonitor Proview 是一款原生 macOS 菜单栏应用。它连接你自己的
 
 **运行环境**　macOS 14 或更高版本，支持 Apple 芯片和 Intel 处理器。
 
-**当前版本**　0.7.0（17）。[下载 macOS 应用与源码](https://github.com/LospAgile/VPSMonitor/releases/tag/v0.7.0)
+**当前版本**　0.7.0（17）。[下载 Apple 芯片原生版（ARM64）](https://github.com/LospAgile/VPSMonitor/releases/download/v0.7.0/VPSMonitor-Proview-0.7.0-macOS-arm64.zip) · [通用版、源码与校验值](https://github.com/LospAgile/VPSMonitor/releases/tag/v0.7.0)
 
 ## 首次连接
 
 1. **准备 Komari。** 已有面板的用户，先用浏览器确认能看到自己的节点。首次搭建时，安装 Komari 服务端，再按面板生成的命令为需要监控的服务器安装 Agent。等第一台设备出现在网页上，就可以连接 Mac。[Komari 官方安装指南](https://komari-document.pages.dev/install/quick-start)
-2. **安装应用。** 从发布页下载 `VPSMonitor-Proview-0.7.0-macOS-universal.zip`，解压后将 `VPSMonitor Proview.app` 拖入“应用程序”并打开。发布包使用本地临时签名，尚未经过 Apple 公证。也可以按下文从源码构建。
+2. **安装应用。** 在苹果菜单的“关于本机”查看芯片。Apple M 系列选文件名结尾为 `arm64.zip` 的原生包；Intel 处理器选 `universal.zip`。解压后将 `VPSMonitor Proview.app` 拖入“应用程序”并打开。发布包使用本地临时签名，尚未经过 Apple 公证。也可以按下文从源码构建。
 3. **填面板地址。** 第一次启动会打开设置。在“Komari 地址”填面板根地址，例如 `https://komari.example.com`。粘贴前删去末尾的 `/admin` 或 `/api`。建议使用 HTTPS 和单独的域名。
 4. **选择访问方式。** 面板允许访客查看时，把所有凭据留空即可。需要登录时，填写 Komari 的 **API Key**，或在“高级认证”使用现有会话。Agent 安装命令里的客户端令牌只供 Agent 上报。[Komari 官方认证说明](https://komari-document.pages.dev/dev/api)
 5. 点击“保存”，再点菜单栏的服务器图标。用节点名称和在线数与网页版核对。之后可以用面板右上角的齿轮重新打开设置。
