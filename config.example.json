@@ -1,0 +1,7 @@
+{
+  "base_url": "https://komari.example.com",
+  "api_key": "",
+  "session_token": "",
+  "cookie": "",
+  "verify_tls": true
+}

@@ -1,0 +1,3 @@
+# id|label|kind|target|port (up to 16 checks)
+example-ping|Example ICMP|ping|192.0.2.10|
+example-ssh|Example SSH|ssh|192.0.2.20|22

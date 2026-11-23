@@ -1,0 +1,9 @@
+{
+  "devices": [
+    {
+      "nodeID": "REPLACE_WITH_ROUTER_NODE_ID",
+      "sshAlias": "example-router",
+      "router": true
+    }
+  ]
+}

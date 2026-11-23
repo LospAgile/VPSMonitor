@@ -1,0 +1,13 @@
+# Real endpoints belong only in the deployed, root-owned copy.
+OUTPUT_DIR=/tmp/vpsmonitor-network
+HISTORY_DIR=/var/lib/vpsmonitor-network
+INTERVAL_SECONDS=60
+PING_COUNT=2
+TIMEOUT_SECONDS=3
+WAN_INTERFACE=wan
+GATEWAY_TARGET=auto
+DNS_NAME=example.com
+DNS_SERVER=
+NPS_TARGET=203.0.113.1
+NPS_PORT=8024
+PROBE_FILE=/etc/vpsmonitor/probes.conf

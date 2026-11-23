@@ -1,0 +1,37 @@
+// Append HTML-safe context to the existing provider's Offline/Online messages.
+// Existing Telegram delivery, credentials, time zones and other events stay intact.
+async function augmentEvent(event, original) {
+  if (!event || !['Offline', 'Online'].includes(event.event) || !Array.isArray(event.clients) || !event.clients.length) return original;
+  let timer;
+  try {
+    const controller = new AbortController();
+    timer = setTimeout(() => controller.abort(), 2000);
+    const response = await fetch('http://127.0.0.1:18765/diagnostic', { signal: controller.signal });
+    if (!response.ok) return original;
+    const data = await response.json();
+    const all = Object.entries(data.nodes || {}).slice(0, 2);
+    const matching = all.filter(([id]) => event.clients.some(client => client && client.uuid === id));
+    // VPS events include both access networks; router events include that router.
+    const rows = matching.length ? matching : all;
+    if (!rows.length) return original;
+    const state = value => value === true ? '正常' : value === false ? '异常' : '未知';
+    const clean = value => String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    const lines = rows.map(([id, node]) => {
+      const sample = node.status === 'ok' || node.status === 'stale' ? node : node.last_sample;
+      const name = clean(node.name || id);
+      if (!sample) return name + '：诊断暂不可用';
+      const age = Math.max(0, Math.floor(Date.now() / 1000 - sample.timestamp));
+      const old = node.status !== 'ok' || age > Math.max(180, sample.interval_seconds * 3);
+      const minutes = Math.floor(sample.observation_seconds_24h / 60);
+      const coverage = minutes >= 1430 ? '覆盖过去24小时' : `实际观测${Math.floor(minutes / 60)}小时${minutes % 60}分`;
+      const issues = (sample.failed_probes || []).slice(0, 4).map(probe => clean(probe.label)).join('、');
+      const degraded = (sample.degraded_probes || []).slice(0, 4).map(probe => `${clean(probe.label)} ${clean(probe.loss_percent)}%`).join('、');
+      return `${name}（${old ? '最后样本，当前状态未知；' : ''}${age}秒前）：WAN ${state(sample.wan_up)}，DNS ${state(sample.dns_ok)}，NPS进程 ${state(sample.nps_running)}；WAN中断${sample.wan_outages_24h}次，${coverage}${issues ? '；未通过：' + issues : ''}${degraded ? '；部分丢包：' + degraded : ''}`;
+    });
+    return original + '\n\n<b>路由网络诊断</b>\n' + lines.join('\n') + '\n丢包率为本轮 ICMP 样本；探测未回应不等同目标离线。';
+  } catch (_) {
+    return original;
+  } finally {
+    if (timer !== undefined) clearTimeout(timer);
+  }
+}

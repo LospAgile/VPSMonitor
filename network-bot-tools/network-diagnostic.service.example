@@ -1,0 +1,21 @@
+[Unit]
+Description=VPSMonitor network diagnostic cache
+After=network-online.target
+
+[Service]
+Type=simple
+User=komari
+Group=komari
+ExecStart=/usr/bin/python3 /opt/vpsmonitor/network-bot-tools/diagnostic_service.py
+Environment=NETWORK_DIAGNOSTIC_CONFIG=/etc/vpsmonitor/network-diagnostic.json
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+CapabilityBoundingSet=
+
+[Install]
+WantedBy=multi-user.target

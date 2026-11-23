@@ -1,0 +1,10 @@
+{
+  "ssh_config": "/etc/vpsmonitor/network-diagnostic.ssh",
+  "nodes": [
+    {
+      "node_id": "REPLACE_WITH_ROUTER_NODE_ID",
+      "alias": "example-router",
+      "name": "示例路由器"
+    }
+  ]
+}
